@@ -1,36 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RestaurantApi.Entities;
+using RestaurantApi.Models;
+using RestaurantApi.Services;
 
 namespace RestaurantApi.Controllers
 {
     [Route("api/restaurant")]
     public class RestaurantController : Controller
     {
-        private readonly RestaurantDbContext _dbContext;
+        private readonly IRestaurantService _restaurantService;
 
-        public RestaurantController(RestaurantDbContext dbContext)
+        public RestaurantController(IRestaurantService restaurantService)
         {
-            _dbContext = dbContext;
+            _restaurantService = restaurantService;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Restaurant>> GetAll()
+        public ActionResult<IEnumerable<RestaurantDto>> GetAll()
         {
-            List<Restaurant> restaurants = _dbContext.Restaurants.ToList();
-            return Ok(restaurants);
+            IEnumerable<RestaurantDto> restaurantsDtos = _restaurantService.GetAll();
+
+            return Ok(restaurantsDtos);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Restaurant> Get([FromRoute] int id)
+        public ActionResult<RestaurantDto> Get([FromRoute] int id)
         {
-            Restaurant? restaurant = _dbContext.Restaurants.FirstOrDefault(r => r.Id == id);
-
-            if (restaurant is null)
+            RestaurantDto? restaurantDto = _restaurantService.GetById(id);
+            if (restaurantDto is null)
             {
                 return NotFound();
             }
 
-            return Ok(restaurant);
+            return Ok(restaurantDto);
+        }
+
+        [HttpPost]
+        public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            int id = _restaurantService.Create(dto);
+
+            return Created($"/api/restaurant/{id}", null);
         }
     }
 }
