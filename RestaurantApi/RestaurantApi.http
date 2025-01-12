@@ -1,5 +1,5 @@
 @RestaurantApi_HostAddress = http://localhost:5243
-@RestaurantId = 855
+@RestaurantId = 844
 
 GET {{RestaurantApi_HostAddress}}/api/restaurant
 Accept: application/json
@@ -13,7 +13,7 @@ Accept: application/json
 POST {{RestaurantApi_HostAddress}}/api/restaurant
 Content-Type: application/json
 {
-    "name": "Pizzeria NapoliPizzeria NapoliPizzeria NapoliPizzeria NapoliPizzeria Napoli",
+    "name": "PizzeriaPizzeriaPizzeriaPizzeriaPizzeriaPizzeriaPizzeriaPizzeriaPizzeria ",
     "description": "Najlepsza pizza w mieœcie!",
     "category": "Pizza",
     "hasDelivery": true,

@@ -5,6 +5,7 @@ using RestaurantApi.Services;
 namespace RestaurantApi.Controllers
 {
     [Route("api/restaurant")]
+    [ApiController]
     public class RestaurantController : Controller
     {
         private readonly IRestaurantService _restaurantService;
@@ -26,10 +27,6 @@ namespace RestaurantApi.Controllers
         public ActionResult<RestaurantDto> Get([FromRoute] int id)
         {
             RestaurantDto? restaurantDto = _restaurantService.GetById(id);
-            if (restaurantDto is null)
-            {
-                return NotFound();
-            }
 
             return Ok(restaurantDto);
         }
@@ -37,11 +34,6 @@ namespace RestaurantApi.Controllers
         [HttpPost]
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             int id = _restaurantService.Create(dto);
 
             return Created($"/api/restaurant/{id}", null);
@@ -51,34 +43,18 @@ namespace RestaurantApi.Controllers
         public ActionResult Delete([FromRoute] int id)
         {
 
-            bool isDeleted = _restaurantService.Detete(id);
-            if (isDeleted)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return NotFound();
-            }
+            _restaurantService.Detete(id);
+
+            return NoContent();
         }
 
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateRestaurantDto dto, [FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            _restaurantService.Update(id, dto);
 
-            bool isUpdated = _restaurantService.Update(id, dto);
-            if (isUpdated)
-            {
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
+            return Ok();
+
         }
     }
 }
