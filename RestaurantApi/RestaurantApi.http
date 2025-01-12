@@ -1,5 +1,5 @@
 @RestaurantApi_HostAddress = http://localhost:5243
-@RestaurantId = 8
+@RestaurantId = 855
 
 GET {{RestaurantApi_HostAddress}}/api/restaurant
 Accept: application/json
@@ -33,7 +33,7 @@ Accept: application/json
 PUT {{RestaurantApi_HostAddress}}/api/restaurant/{{RestaurantId}}
 Content-Type: application/json
 {
-    "name": "Update Test NameUpdate Test NameUpdate Test NameUpdate Test Name",
+    "name": "Update Test",
     "description": "Update Test Description",
     "hasDelivery": false
 }
