@@ -1,5 +1,5 @@
 @RestaurantApi_HostAddress = http://localhost:5243
-@RestaurantId = 10
+@RestaurantId = 8
 
 GET {{RestaurantApi_HostAddress}}/api/restaurant
 Accept: application/json
@@ -22,4 +22,18 @@ Content-Type: application/json
     "city": "Warszawa",
     "street": "Ulica Pizza 12",
     "postalCode": "00-001"
+}
+
+###
+
+DELETE {{RestaurantApi_HostAddress}}/api/restaurant/{{RestaurantId}}
+Accept: application/json
+
+###
+PUT {{RestaurantApi_HostAddress}}/api/restaurant/{{RestaurantId}}
+Content-Type: application/json
+{
+    "name": "Update Test NameUpdate Test NameUpdate Test NameUpdate Test Name",
+    "description": "Update Test Description",
+    "hasDelivery": false
 }
