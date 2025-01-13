@@ -6,9 +6,9 @@ namespace RestaurantApi.Controllers
 {
     [Route("api/restaurant/{restaurantId}/dish")]
     [ApiController]
-    public class DishController(IDishServive dishServive) : ControllerBase
+    public class DishController(IDishService dishServive) : ControllerBase
     {
-        private readonly IDishServive _dishServive = dishServive;
+        private readonly IDishService _dishServive = dishServive;
 
         [HttpPost]
         public ActionResult Post([FromRoute] int restaurantId, CreateDishDto dto)

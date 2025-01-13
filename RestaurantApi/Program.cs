@@ -1,6 +1,5 @@
 using NLog;
 using NLog.Web;
-using RestaurantApi;
 using RestaurantApi.Entities;
 using RestaurantApi.Mapper;
 using RestaurantApi.Middleware;
@@ -14,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<RestaurantDbContext>();
 builder.Services.AddAutoMapper(typeof(RestaurantMappingProfile).Assembly);
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
-builder.Services.AddScoped<IDishServive, RestaurantHelpers>();
+builder.Services.AddScoped<IDishService, DishService>();
 builder.Services.AddOpenApi();
 
 // U¿yj domyœlnego logowania
@@ -39,11 +38,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
-using (IServiceScope scope = app.Services.CreateScope())
-{
-    RestaurantDbContext dbContext = scope.ServiceProvider.GetRequiredService<RestaurantDbContext>();
-    new RestaurantSeeder(dbContext).Seed();
-}
+app.SeedDatabase();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

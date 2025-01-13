@@ -2,7 +2,7 @@
 
 namespace RestaurantApi.Services
 {
-    public interface IDishServive
+    public interface IDishService
     {
         int Create(int restaurantID, CreateDishDto dto);
 

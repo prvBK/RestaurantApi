@@ -1,15 +1,15 @@
 ﻿using RestaurantApi.Entities;
 
-namespace RestaurantApi
+namespace RestaurantApi.Seeders
 {
-    public class RestaurantSeeder(RestaurantDbContext dbContext)
+    public class RestaurantSeeder(RestaurantDbContext _dbContext)
     {
-        private readonly RestaurantDbContext _dbContext = dbContext;
 
         private static List<Restaurant> Restaurants
         {
             get
             {
+
                 List<Restaurant> restaurants =
                 [
                 new ()
@@ -64,10 +64,30 @@ namespace RestaurantApi
             }
         }
 
+        public List<Role> Roles
+        {
+            get
+            {
+                return new List<Role>
+            {
+                new Role {Name = "User" },
+                new Role {Name = "Manager" },
+                new Role { Name = "Admin" }
+            };
+            }
+        }
+
         public void Seed()
         {
             if (_dbContext.Database.CanConnect())
             {
+                if (!_dbContext.Roles.Any())
+                {
+                    List<Role> roles = Roles;
+                    _dbContext.Roles.AddRange(roles);
+                    _dbContext.SaveChanges();
+                }
+
                 if (!_dbContext.Restaurants.Any())
                 {
                     List<Restaurant> restaurants = Restaurants;

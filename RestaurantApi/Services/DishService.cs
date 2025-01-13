@@ -7,7 +7,7 @@ using RestaurantApi.Models;
 
 namespace RestaurantApi.Services
 {
-    public class RestaurantHelpers(RestaurantDbContext context, IMapper mapper) : IDishServive
+    public class DishService(RestaurantDbContext context, IMapper mapper) : IDishService
     {
         private readonly RestaurantDbContext _context = context;
         private readonly IMapper _mapper = mapper;
