@@ -37,7 +37,6 @@ namespace RestaurantApi.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-
             _restaurantService.Detete(id);
 
             return NoContent();
@@ -49,7 +48,6 @@ namespace RestaurantApi.Controllers
             _restaurantService.Update(id, dto);
 
             return Ok();
-
         }
     }
 }

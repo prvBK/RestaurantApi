@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<RestaurantDbContext>();
 builder.Services.AddAutoMapper(typeof(RestaurantMappingProfile).Assembly);
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
-builder.Services.AddScoped<IDishServive, DishServive>();
+builder.Services.AddScoped<IDishServive, RestaurantHelpers>();
 builder.Services.AddOpenApi();
 
 // U¿yj domyœlnego logowania

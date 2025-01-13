@@ -31,6 +31,12 @@ namespace RestaurantApi.Controllers
             List<DishDto> dishes = _dishServive.GetAll(restaurantId);
             return Ok(dishes);
         }
-    }
 
+        [HttpDelete]
+        public ActionResult Delete([FromRoute] int restaurantId)
+        {
+            _dishServive.RemoveAll(restaurantId);
+            return NoContent();
+        }
+    }
 }
