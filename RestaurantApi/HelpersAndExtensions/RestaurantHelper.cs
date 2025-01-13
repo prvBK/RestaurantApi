@@ -4,7 +4,7 @@ using RestaurantApi.Exceptions;
 
 namespace RestaurantApi.HelpersAndExtensions
 {
-    public class RestaurantHelper()
+    public class RestaurantHelper
     {
         public static Restaurant GetRestaurantById(RestaurantDbContext context, int restaurantId)
         {

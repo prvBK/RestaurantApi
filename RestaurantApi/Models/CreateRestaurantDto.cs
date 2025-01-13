@@ -4,7 +4,7 @@ namespace RestaurantApi.Models
 {
     public class CreateRestaurantDto
     {
-        public int Id { get; set; }
+        public required int Id { get; set; }
 
         [Required]
         [MaxLength(25)]
@@ -12,7 +12,7 @@ namespace RestaurantApi.Models
 
         public string? Description { get; set; }
         public string? Category { get; set; }
-        public bool HasDelivery { get; set; }
+        public bool? HasDelivery { get; set; }
 
         [EmailAddress]
         public string? ContactEmail { get; set; }

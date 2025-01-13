@@ -6,7 +6,7 @@ namespace RestaurantApi.Controllers
 {
     [Route("api/restaurant")]
     [ApiController]
-    public class RestaurantController(IRestaurantService restaurantService) : Controller
+    public class RestaurantController(IRestaurantService restaurantService) : ControllerBase
     {
         private readonly IRestaurantService _restaurantService = restaurantService;
 

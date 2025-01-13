@@ -4,7 +4,7 @@ namespace RestaurantApi.Services.Interfaces
 {
     public interface IDishService
     {
-        int Create(int restaurantID, CreateDishDto dto);
+        int Create(int restaurantId, CreateDishDto dto);
 
         List<DishDto> GetAll(int restaurantId);
 

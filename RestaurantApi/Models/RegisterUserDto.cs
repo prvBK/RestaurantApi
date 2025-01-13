@@ -10,7 +10,7 @@ namespace RestaurantApi.Models
         [MinLength(6)]
         public required string Password { get; set; }
         public string? Nationality { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public int RoleId { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public int? RoleId { get; set; }
     }
 }
