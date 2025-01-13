@@ -4,7 +4,7 @@ namespace RestaurantApi.Entities
 {
     public class RestaurantDbContext : DbContext
     {
-        private string _connectionString = "Data Source=DELL_BK;Initial Catalog=RestaurantDB;Integrated Security=SSPI;Trusted_Connection=True;TrustServerCertificate=True;";
+        private readonly string _connectionString = "Data Source=DELL_BK;Initial Catalog=RestaurantDB;Integrated Security=SSPI;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Address> Addresses { get; set; }

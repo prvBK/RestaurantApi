@@ -6,14 +6,9 @@ namespace RestaurantApi.Controllers
 {
     [Route("api/restaurant")]
     [ApiController]
-    public class RestaurantController : Controller
+    public class RestaurantController(IRestaurantService restaurantService) : Controller
     {
-        private readonly IRestaurantService _restaurantService;
-
-        public RestaurantController(IRestaurantService restaurantService)
-        {
-            _restaurantService = restaurantService;
-        }
+        private readonly IRestaurantService _restaurantService = restaurantService;
 
         [HttpGet]
         public ActionResult<IEnumerable<RestaurantDto>> GetAll()

@@ -2,20 +2,17 @@
 
 namespace RestaurantApi
 {
-    public class RestaurantSeeder
+    public class RestaurantSeeder(RestaurantDbContext dbContext)
     {
-        private readonly RestaurantDbContext _dbContext;
+        private readonly RestaurantDbContext _dbContext = dbContext;
 
-        public RestaurantSeeder(RestaurantDbContext dbContext)
+        private static List<Restaurant> Restaurants
         {
-            _dbContext = dbContext;
-        }
-
-        private List<Restaurant> GetRestaurants()
-        {
-            List<Restaurant> restaurants = new List<Restaurant>()
+            get
             {
-            new Restaurant()
+                List<Restaurant> restaurants =
+                [
+                new ()
             {
                 Name = "KFC",
                 Category = "Fast Food",
@@ -24,20 +21,20 @@ namespace RestaurantApi
                 ContactEmail = "contact@kfc.com",
                 ContactNumber = "33333",
                 HasDelivery = true,
-                Dishes = new List<Dish>()
-                    {
-                        new Dish()
+                Dishes =
+                    [
+                        new ()
                         {
                             Name = "Nashville Hot Chicken",
                             Price = 10.30M,
                         },
 
-                        new Dish()
+                        new ()
                         {
                             Name = "Chicken Nuggets",
                             Price = 5.30M,
                         },
-                    },
+                    ],
                 Address = new Address()
                 {
                     City = "Kraków",
@@ -61,9 +58,10 @@ namespace RestaurantApi
                         PostalCode = "30-001"
                     }
                 }
-            };
+                ];
 
-            return restaurants;
+                return restaurants;
+            }
         }
 
         public void Seed()
@@ -72,7 +70,7 @@ namespace RestaurantApi
             {
                 if (!_dbContext.Restaurants.Any())
                 {
-                    List<Restaurant> restaurants = GetRestaurants();
+                    List<Restaurant> restaurants = Restaurants;
                     _dbContext.Restaurants.AddRange(restaurants);
                     _dbContext.SaveChanges();
                 }
