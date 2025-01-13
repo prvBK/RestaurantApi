@@ -8,7 +8,7 @@ namespace RestaurantApi.Services
     {
         public void RegisterUser(RegisterUserDto dto)
         {
-            User newUser = new User()
+            User newUser = new()
             {
                 Email = dto.Email,
                 DateOfBirth = dto.DateOfBirth,

@@ -12,7 +12,7 @@ namespace RestaurantApi.Controllers
         public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
         {
             accountService.RegisterUser(dto);
-            return Created();
+            return Ok();
         }
     }
 }
