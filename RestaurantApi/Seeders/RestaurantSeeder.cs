@@ -68,12 +68,12 @@ namespace RestaurantApi.Seeders
         {
             get
             {
-                return new List<Role>
-            {
+                return
+            [
                 new Role {Name = "User" },
                 new Role {Name = "Manager" },
                 new Role { Name = "Admin" }
-            };
+            ];
             }
         }
 

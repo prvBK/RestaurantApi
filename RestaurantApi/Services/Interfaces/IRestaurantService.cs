@@ -1,6 +1,6 @@
 ﻿using RestaurantApi.Models;
 
-namespace RestaurantApi.Services
+namespace RestaurantApi.Services.Interfaces
 {
     public interface IRestaurantService
     {

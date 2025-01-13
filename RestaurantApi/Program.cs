@@ -1,9 +1,11 @@
 using NLog;
 using NLog.Web;
 using RestaurantApi.Entities;
+using RestaurantApi.HelpersAndExtensions;
 using RestaurantApi.Mapper;
 using RestaurantApi.Middleware;
 using RestaurantApi.Services;
+using RestaurantApi.Services.Interfaces;
 using Scalar.AspNetCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,7 @@ builder.Services.AddDbContext<RestaurantDbContext>();
 builder.Services.AddAutoMapper(typeof(RestaurantMappingProfile).Assembly);
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IDishService, DishService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddOpenApi();
 
 // U¿yj domyœlnego logowania

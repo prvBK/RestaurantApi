@@ -1,12 +1,12 @@
 ﻿using RestaurantApi.Entities;
-using RestaurantApi.Seeders;
 
-public class DatabaseInitializer
+namespace RestaurantApi.Seeders
 {
-    public static void SeedDatabase(IServiceProvider serviceProvider)
+    public class DatabaseInitializer
     {
-        using (IServiceScope scope = serviceProvider.CreateScope())
+        public static void SeedDatabase(IServiceProvider serviceProvider)
         {
+            using IServiceScope scope = serviceProvider.CreateScope();
             RestaurantDbContext dbContext = scope.ServiceProvider.GetRequiredService<RestaurantDbContext>();
             new RestaurantSeeder(dbContext).Seed();
         }

@@ -2,8 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using RestaurantApi.Entities;
 using RestaurantApi.Exceptions;
-using RestaurantApi.Helpers;
+using RestaurantApi.HelpersAndExtensions;
 using RestaurantApi.Models;
+using RestaurantApi.Services.Interfaces;
 
 namespace RestaurantApi.Services
 {

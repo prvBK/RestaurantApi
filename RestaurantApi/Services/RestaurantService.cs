@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RestaurantApi.Entities;
-using RestaurantApi.Exceptions;
+using RestaurantApi.HelpersAndExtensions;
 using RestaurantApi.Models;
+using RestaurantApi.Services.Interfaces;
 
 namespace RestaurantApi.Services
 {
@@ -10,11 +11,7 @@ namespace RestaurantApi.Services
     {
         public RestaurantDto GetById(int id)
         {
-            Restaurant? restaurant = dbContext
-                .Restaurants
-                .Include(r => r.Address)
-                .Include(r => r.Dishes)
-                .FirstOrDefault(r => r.Id == id) ?? throw new NotFoundException("Restaurant not found");
+            Restaurant? restaurant = RestaurantHelper.GetRestaurantByIdWithDishesAndAdress(dbContext, id);
             RestaurantDto restaurantDto = mapper.Map<RestaurantDto>(restaurant);
 
             return restaurantDto;
@@ -42,14 +39,14 @@ namespace RestaurantApi.Services
 
         public void Detete(int id)
         {
-            Restaurant? restaurant = dbContext.Restaurants.SingleOrDefault(r => r.Id == id) ?? throw new NotFoundException("Restaurant not found");
+            Restaurant? restaurant = RestaurantHelper.GetRestaurantById(dbContext, id);
             dbContext.Restaurants.Remove(restaurant);
             dbContext.SaveChanges();
         }
 
         public void Update(int id, UpdateRestaurantDto dto)
         {
-            Restaurant? restaurant = dbContext.Restaurants.FirstOrDefault(r => r.Id == id) ?? throw new NotFoundException("Restaurant not found");
+            Restaurant? restaurant = RestaurantHelper.GetRestaurantById(dbContext, id);
             restaurant.Name = dto.Name;
             restaurant.Description = dto.Description;
             restaurant.HasDelivery = dto.HasDelivery;

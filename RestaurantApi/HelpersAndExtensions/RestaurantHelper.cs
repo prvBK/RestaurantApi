@@ -2,7 +2,7 @@
 using RestaurantApi.Entities;
 using RestaurantApi.Exceptions;
 
-namespace RestaurantApi.Helpers
+namespace RestaurantApi.HelpersAndExtensions
 {
     public class RestaurantHelper()
     {
@@ -18,6 +18,17 @@ namespace RestaurantApi.Helpers
             Restaurant restaurant = context.
                 Restaurants
                 .Include(r => r.Dishes)
+                .FirstOrDefault(r => r.Id == restaurantId) ?? throw new NotFoundException("Restaurant not found");
+
+            return restaurant;
+        }
+
+        public static Restaurant GetRestaurantByIdWithDishesAndAdress(RestaurantDbContext context, int restaurantId)
+        {
+            Restaurant restaurant = context.
+                Restaurants
+                .Include(r => r.Dishes)
+                .Include(r => r.Address)
                 .FirstOrDefault(r => r.Id == restaurantId) ?? throw new NotFoundException("Restaurant not found");
 
             return restaurant;
