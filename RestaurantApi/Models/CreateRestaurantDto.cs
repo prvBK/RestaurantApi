@@ -1,30 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace RestaurantApi.Models
+﻿namespace RestaurantApi.Models
 {
     public class CreateRestaurantDto
     {
-        public required int Id { get; set; }
+        public int? Id { get; set; }
 
-        [Required]
-        [MaxLength(25)]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         public string? Description { get; set; }
         public string? Category { get; set; }
         public bool? HasDelivery { get; set; }
 
-        [EmailAddress]
         public string? ContactEmail { get; set; }
 
         public string? ContactNumber { get; set; }
 
-        [Required]
-        [MaxLength(50)]
         public string? City { get; set; }
 
-        [Required]
-        [MaxLength(50)]
         public string? Street { get; set; }
 
         public string? PostalCode { get; set; }

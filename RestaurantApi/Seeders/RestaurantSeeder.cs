@@ -4,12 +4,10 @@ namespace RestaurantApi.Seeders
 {
     public class RestaurantSeeder(RestaurantDbContext _dbContext)
     {
-
         private static List<Restaurant> Restaurants
         {
             get
             {
-
                 List<Restaurant> restaurants =
                 [
                 new ()
