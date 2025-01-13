@@ -8,7 +8,7 @@ namespace RestaurantApi.Controllers
     [ApiController]
     public class AccountController(IAccountService accountService) : ControllerBase
     {
-        [HttpGet]
+        [HttpPost]
         [Route("register")]
         public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
         {

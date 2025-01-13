@@ -13,7 +13,7 @@ namespace RestaurantApi.Services
                 Email = dto.Email,
                 DateOfBirth = dto.DateOfBirth,
                 Nationality = dto.Nationality,
-                RoleId = dto.RoleId
+                RoleId = dto.RoleId ?? context.Roles.Select(r => r.Id).FirstOrDefault()
             };
 
             context.Users.Add(newUser);
