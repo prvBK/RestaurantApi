@@ -18,7 +18,6 @@ namespace RestaurantApi.Middleware
                 context.Response.ContentType = "text/plain";
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(notFoundException.Message);
-                //context.Response.Headers.Append("ErrorMessage", notFoundException.Message);
             }
             catch (Exception ex)
             {

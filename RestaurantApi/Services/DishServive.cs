@@ -51,7 +51,7 @@ namespace RestaurantApi.Services
 
         public void RemoveAll(int restaurantId)
         {
-            Restaurant restaurant = RestaurantHelper.GetRestaurantById(_context, restaurantId);
+            Restaurant restaurant = RestaurantHelper.GetRestaurantByIdWithDishes(_context, restaurantId);
             if (restaurant.Dishes != null)
             {
                 _context.RemoveRange(restaurant.Dishes);
