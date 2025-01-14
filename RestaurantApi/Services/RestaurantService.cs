@@ -7,27 +7,26 @@ using RestaurantApi.Exceptions;
 using RestaurantApi.HelpersAndExtensions;
 using RestaurantApi.Models;
 using RestaurantApi.Services.Interfaces;
-using System.Security.Claims;
 
 namespace RestaurantApi.Services
 {
-    public class RestaurantService(RestaurantDbContext dbContext, IMapper mapper, IAuthorizationService authorizationService) : IRestaurantService
+    public class RestaurantService(RestaurantDbContext dbContext, IMapper mapper, IAuthorizationService authorizationService, IUserContextService userContextService) : IRestaurantService
     {
-        public int Create(CreateRestaurantDto dto, int userId)
+        public int Create(CreateRestaurantDto dto)
         {
             Restaurant restaurant = mapper.Map<Restaurant>(dto);
-            restaurant.CreatedById = userId;
+            restaurant.CreatedById = userContextService.GetUserId;
             dbContext.Restaurants.Add(restaurant);
             dbContext.SaveChanges();
             return restaurant.Id;
         }
 
-        public void Detete(int id, ClaimsPrincipal user)
+        public void Detete(int id)
         {
 
             Restaurant? restaurant = RestaurantHelper.GetRestaurantById(dbContext, id);
 
-            AuthorizationResult authorizationResult = authorizationService.AuthorizeAsync(user, restaurant, new ResourceOperationRequirment(ResourceOperation.Delete)).Result;
+            AuthorizationResult authorizationResult = authorizationService.AuthorizeAsync(userContextService.User, restaurant, new ResourceOperationRequirment(ResourceOperation.Delete)).Result;
 
             if (!authorizationResult.Succeeded)
             {
@@ -58,11 +57,11 @@ namespace RestaurantApi.Services
             return restaurantDto;
         }
 
-        public void Update(int id, UpdateRestaurantDto dto, ClaimsPrincipal user)
+        public void Update(int id, UpdateRestaurantDto dto)
         {
             Restaurant? restaurant = RestaurantHelper.GetRestaurantById(dbContext, id);
 
-            AuthorizationResult authorizationResult = authorizationService.AuthorizeAsync(user, restaurant, new ResourceOperationRequirment(ResourceOperation.Update)).Result;
+            AuthorizationResult authorizationResult = authorizationService.AuthorizeAsync(userContextService.User, restaurant, new ResourceOperationRequirment(ResourceOperation.Update)).Result;
 
             if (!authorizationResult.Succeeded)
             {
