@@ -67,7 +67,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference(options =>
     {
         options
-        .WithTitle("Restaurant API")
+        .WithTitle("Scalar API " + authenticationSettings.TokenToTestingDescription ?? string.Empty)
         .WithTheme(ScalarTheme.Mars)
         .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
         .WithDarkMode(true);

@@ -35,7 +35,7 @@ namespace RestaurantApi.Services
             [
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
-                new Claim(ClaimTypes.Role, user.Role.Name),
+                new Claim(ClaimTypes.Role, user.Role?.Name ?? string.Empty),
                 new Claim("DateOfBirth", user.DateOfBirth is not null ? user.DateOfBirth.Value.ToString("yyyy-MM-dd") : "yyyy-MM-dd"),
                 new Claim("Nationality", user.Nationality ?? "Polskie")
             ];
@@ -62,8 +62,7 @@ namespace RestaurantApi.Services
                 Email = dto.Email,
                 DateOfBirth = dto.DateOfBirth,
                 Nationality = dto.Nationality,
-                RoleId = dto.RoleId ?? context.Roles.Select(r => r.Id).FirstOrDefault(),
-                Role = context.Roles.First(r => r.Id == (dto.RoleId ?? context.Roles.Select(r => r.Id).First()))
+                RoleId = dto.RoleId ?? context.Roles.Select(r => r.Id).FirstOrDefault()
             };
 
             string hashPassword = passwordHasher.HashPassword(newUser, dto.Password);
