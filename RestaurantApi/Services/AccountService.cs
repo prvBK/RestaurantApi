@@ -31,33 +31,33 @@ namespace RestaurantApi.Services
                 throw new BadRequestEcetpion("Invalid username or password");
             }
 
-            List<Claim> claims = new List<Claim>()
-            {
+            List<Claim> claims =
+            [
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Role, user.Role.Name),
                 new Claim("DateOfBirth", user.DateOfBirth is not null ? user.DateOfBirth.Value.ToString("yyyy-MM-dd") : "yyyy-MM-dd"),
                 new Claim("Nationality", user.Nationality ?? "Polskie")
-            };
+            ];
 
-            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey));
-            SigningCredentials cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey ?? string.Empty));
+            SigningCredentials cred = new(key, SecurityAlgorithms.HmacSha256);
             DateTime expires = DateTime.Now.AddDays(authenticationSettings.JwtExpireDay ?? 1);
 
-            JwtSecurityToken token = new JwtSecurityToken(authenticationSettings.JwtIssuer,
+            JwtSecurityToken token = new(authenticationSettings.JwtIssuer,
                 authenticationSettings.JwtIssuer,
                 claims,
                 expires: expires,
                 signingCredentials: cred
                 );
 
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityTokenHandler tokenHandler = new();
             return tokenHandler.WriteToken(token);
         }
 
         public void RegisterUser(RegisterUserDto dto)
         {
-            User newUser = new User()
+            User newUser = new()
             {
                 Email = dto.Email,
                 DateOfBirth = dto.DateOfBirth,

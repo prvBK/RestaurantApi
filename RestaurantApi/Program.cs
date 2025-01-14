@@ -75,15 +75,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
-
+app.UseMiddleware<GlobalHeaderMiddleware>();
 app.UseAuthentication();
-
-app.SeedDatabase();
-
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
+app.SeedDatabase();
+app.UseHttpsRedirection();
 app.MapControllers();
 
 await app.RunAsync();

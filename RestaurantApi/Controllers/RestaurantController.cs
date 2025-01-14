@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantApi.Models;
 using RestaurantApi.Services.Interfaces;
 
@@ -11,6 +12,7 @@ namespace RestaurantApi.Controllers
         private readonly IRestaurantService _restaurantService = restaurantService;
 
         [HttpGet]
+        [Authorize]
         public ActionResult<IEnumerable<RestaurantDto>> GetAll()
         {
             IEnumerable<RestaurantDto> restaurantsDtos = _restaurantService.GetAll();
