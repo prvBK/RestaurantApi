@@ -36,9 +36,13 @@ namespace RestaurantApi.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Role, user.Role?.Name ?? string.Empty),
-                new Claim("DateOfBirth", user.DateOfBirth is not null ? user.DateOfBirth.Value.ToString("yyyy-MM-dd") : "yyyy-MM-dd"),
-                new Claim("Nationality", user.Nationality ?? "Polskie")
+                new Claim("DateOfBirth", user.DateOfBirth is not null ? user.DateOfBirth.Value.ToString("yyyy-MM-dd") : "yyyy-MM-dd")
             ];
+
+            if (!string.IsNullOrEmpty(user.Nationality))
+            {
+                claims.Add(new Claim("Nationality", user.Nationality));
+            }
 
             SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey ?? string.Empty));
             SigningCredentials cred = new(key, SecurityAlgorithms.HmacSha256);

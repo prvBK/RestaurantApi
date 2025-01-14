@@ -40,7 +40,10 @@ builder.Services.AddAuthentication(option =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey ?? string.Empty))
     };
 });
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("HasNationality", builder => builder.RequireClaim("Nationality", "Polish", "German"));
+});
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddControllers();
@@ -54,9 +57,8 @@ builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator
 builder.Services.AddScoped<IValidator<CreateRestaurantDto>, CreateRestaurantDtoValidator>();
 builder.Services.AddOpenApi();
 
-// U¿yj domyœlnego logowania
-builder.Logging.ClearProviders(); // Opcjonalnie, aby wyczyœciæ inne dostawców logów
-builder.Host.UseNLog(); // U¿yj NLog jako loggera
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
 WebApplication app = builder.Build();
 
@@ -70,6 +72,8 @@ if (app.Environment.IsDevelopment())
         .WithTitle("Scalar API " + authenticationSettings.TokenToTestingDescription ?? string.Empty)
         .WithTheme(ScalarTheme.Mars)
         .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+        .WithTestRequestButton(true)
+        .
         .WithDarkMode(true);
     });
 }

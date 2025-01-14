@@ -7,12 +7,12 @@ namespace RestaurantApi.Controllers
 {
     [Route("api/restaurant")]
     [ApiController]
-    [Authorize]
     public class RestaurantController(IRestaurantService restaurantService) : ControllerBase
     {
         private readonly IRestaurantService _restaurantService = restaurantService;
 
         [HttpGet]
+        [Authorize(Policy = "HasNationality")]
         public ActionResult<IEnumerable<RestaurantDto>> GetAll()
         {
             IEnumerable<RestaurantDto> restaurantsDtos = _restaurantService.GetAll();
