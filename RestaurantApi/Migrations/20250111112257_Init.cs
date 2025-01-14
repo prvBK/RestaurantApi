@@ -8,6 +8,19 @@ namespace RestaurantApi.Migrations
     public partial class Init : Migration
     {
         /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Dishes");
+
+            migrationBuilder.DropTable(
+                name: "Restaurans");
+
+            migrationBuilder.DropTable(
+                name: "Adresses");
+        }
+
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -83,19 +96,6 @@ namespace RestaurantApi.Migrations
                 table: "Restaurans",
                 column: "AdressId",
                 unique: true);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Dishes");
-
-            migrationBuilder.DropTable(
-                name: "Restaurans");
-
-            migrationBuilder.DropTable(
-                name: "Adresses");
         }
     }
 }

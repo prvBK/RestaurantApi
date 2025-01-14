@@ -37,8 +37,9 @@ namespace RestaurantApi.Seeders
                 {
                     City = "Kraków",
                     Street = "Długa 5",
-                    PostalCode = "30-001"
-                }
+                    PostalCode = "30-001",
+                },
+                    CreatedById = 1
             },
                 new Restaurant()
                 {
@@ -54,7 +55,8 @@ namespace RestaurantApi.Seeders
                         City = "Kraków",
                         Street = "Szewska 2",
                         PostalCode = "30-001"
-                    }
+                    },
+                    CreatedById = 1
                 }
                 ];
 

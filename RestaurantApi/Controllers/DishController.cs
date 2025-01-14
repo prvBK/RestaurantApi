@@ -10,11 +10,11 @@ namespace RestaurantApi.Controllers
     {
         private readonly IDishService _dishServive = dishServive;
 
-        [HttpPost]
-        public ActionResult Post([FromRoute] int restaurantId, CreateDishDto dto)
+        [HttpDelete]
+        public ActionResult Delete([FromRoute] int restaurantId)
         {
-            int newDishID = _dishServive.Create(restaurantId, dto);
-            return Created($"api/restaurant/{restaurantId}/dish/{newDishID}", null);
+            _dishServive.RemoveAll(restaurantId);
+            return NoContent();
         }
 
         [HttpGet]
@@ -32,11 +32,11 @@ namespace RestaurantApi.Controllers
             return Ok(dishes);
         }
 
-        [HttpDelete]
-        public ActionResult Delete([FromRoute] int restaurantId)
+        [HttpPost]
+        public ActionResult Post([FromRoute] int restaurantId, CreateDishDto dto)
         {
-            _dishServive.RemoveAll(restaurantId);
-            return NoContent();
+            int newDishID = _dishServive.Create(restaurantId, dto);
+            return Created($"api/restaurant/{restaurantId}/dish/{newDishID}", null);
         }
     }
 }

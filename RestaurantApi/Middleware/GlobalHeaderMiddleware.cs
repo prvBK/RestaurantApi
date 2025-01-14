@@ -4,8 +4,8 @@ namespace RestaurantApi.Middleware
 {
     public class GlobalHeaderMiddleware(RequestDelegate next, AuthenticationSettings authenticationSettings)
     {
-        private readonly RequestDelegate _next = next;
         private readonly AuthenticationSettings _authenticationSettings = authenticationSettings;
+        private readonly RequestDelegate _next = next;
 
         public async Task InvokeAsync(HttpContext context)
         {

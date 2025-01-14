@@ -4,14 +4,20 @@ namespace RestaurantApi.Middleware
 {
     public class ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
     {
-        private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
         private readonly ILogger<ErrorHandlingMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
 
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
                 await _next(context);
+            }
+            catch (ForbidException forbidException)
+            {
+                context.Response.ContentType = "text/plain";
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync(forbidException.Message);
             }
             catch (BadRequestEcetpion badRequestEcetpion)
             {

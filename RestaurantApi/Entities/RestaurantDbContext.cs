@@ -6,11 +6,16 @@ namespace RestaurantApi.Entities
     {
         private readonly string _connectionString = "Data Source=DELL_BK;Initial Catalog=RestaurantDB;Integrated Security=SSPI;Trusted_Connection=True;TrustServerCertificate=True;";
 
-        public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Dish> Dishes { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_connectionString);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,11 +45,6 @@ namespace RestaurantApi.Entities
                 .Property(r => r.Street)
                 .IsRequired()
                 .HasMaxLength(50);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_connectionString);
         }
     }
 }

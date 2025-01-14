@@ -25,15 +25,6 @@ namespace RestaurantApi.Services
             return dishEntitie.Id;
         }
 
-        public DishDto GetById(int restaurantId, int dishId)
-        {
-            RestaurantHelper.GetRestaurantById(_context, restaurantId);
-            Dish? dish = _context.Dishes.FirstOrDefault(d => d.RestaurantId == restaurantId && d.Id == dishId) ?? throw new NotFoundException("Dish not found in current restaurant");
-            DishDto dishDto = _mapper.Map<DishDto>(dish);
-
-            return dishDto;
-        }
-
         public List<DishDto> GetAll(int restaurantId)
         {
             RestaurantHelper.GetRestaurantById(_context, restaurantId);
@@ -47,6 +38,15 @@ namespace RestaurantApi.Services
             List<DishDto> dishDtos = _mapper.Map<List<DishDto>>(dishes);
 
             return dishDtos;
+        }
+
+        public DishDto GetById(int restaurantId, int dishId)
+        {
+            RestaurantHelper.GetRestaurantById(_context, restaurantId);
+            Dish? dish = _context.Dishes.FirstOrDefault(d => d.RestaurantId == restaurantId && d.Id == dishId) ?? throw new NotFoundException("Dish not found in current restaurant");
+            DishDto dishDto = _mapper.Map<DishDto>(dish);
+
+            return dishDto;
         }
 
         public void RemoveAll(int restaurantId)

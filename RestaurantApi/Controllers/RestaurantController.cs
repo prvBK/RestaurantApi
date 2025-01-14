@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestaurantApi.Models;
 using RestaurantApi.Services.Interfaces;
+using System.Security.Claims;
 
 namespace RestaurantApi.Controllers
 {
@@ -11,13 +12,22 @@ namespace RestaurantApi.Controllers
     {
         private readonly IRestaurantService _restaurantService = restaurantService;
 
-        [HttpGet]
-        [Authorize(Policy = "HasNationality")]
-        public ActionResult<IEnumerable<RestaurantDto>> GetAll()
+        [HttpPost]
+        [Authorize(Roles = "User,Admin,Manager")]
+        public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
         {
-            IEnumerable<RestaurantDto> restaurantsDtos = _restaurantService.GetAll();
+            int userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            int id = _restaurantService.Create(dto, userId);
 
-            return Ok(restaurantsDtos);
+            return Created($"/api/restaurant/{id}", null);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            _restaurantService.Detete(id, User);
+
+            return NoContent();
         }
 
         [AllowAnonymous]
@@ -29,27 +39,20 @@ namespace RestaurantApi.Controllers
             return Ok(restaurantDto);
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin,Manager")]
-        public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
+        [HttpGet]
+        //[Authorize(Policy = "HasNationality")]
+        [Authorize(Policy = "Atleast20")]
+        public ActionResult<IEnumerable<RestaurantDto>> GetAll()
         {
-            int id = _restaurantService.Create(dto);
+            IEnumerable<RestaurantDto> restaurantsDtos = _restaurantService.GetAll();
 
-            return Created($"/api/restaurant/{id}", null);
-        }
-
-        [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] int id)
-        {
-            _restaurantService.Detete(id);
-
-            return NoContent();
+            return Ok(restaurantsDtos);
         }
 
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateRestaurantDto dto, [FromRoute] int id)
         {
-            _restaurantService.Update(id, dto);
+            _restaurantService.Update(id, dto, User);
 
             return Ok();
         }

@@ -9,19 +9,19 @@ namespace RestaurantApi.Controllers
     public class AccountController(IAccountService accountService) : ControllerBase
     {
         [HttpPost]
-        [Route("register")]
-        public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
-        {
-            accountService.RegisterUser(dto);
-            return Ok();
-        }
-
-        [HttpPost]
         [Route("login")]
         public ActionResult Login([FromBody] LoginDto dto)
         {
             string token = accountService.GenerateJwt(dto);
             return Ok(token);
+        }
+
+        [HttpPost]
+        [Route("register")]
+        public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
+        {
+            accountService.RegisterUser(dto);
+            return Ok();
         }
     }
 }
