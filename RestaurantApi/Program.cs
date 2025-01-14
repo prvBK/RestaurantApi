@@ -1,8 +1,10 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
+using RestaurantApi.Authentication;
 using RestaurantApi.Entities;
 using RestaurantApi.HelpersAndExtensions;
 using RestaurantApi.Mapper;
@@ -12,9 +14,32 @@ using RestaurantApi.Services;
 using RestaurantApi.Services.Interfaces;
 using RestaurantApi.Validators;
 using Scalar.AspNetCore;
+using System.Text;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 LogManager.Setup().LoadConfigurationFromAppSettings();
+
+AuthenticationSettings authenticationSettings = new();
+builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+builder.Services.AddSingleton(authenticationSettings);
+
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = "Bearer";
+    option.DefaultScheme = "Bearer";
+    option.DefaultChallengeScheme = "Bearer";
+}).AddJwtBearer(cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+    cfg.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = authenticationSettings.JwtIssuer,
+        ValidAudience = authenticationSettings.JwtIssuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey ?? string.Empty))
+    };
+});
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
@@ -50,6 +75,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
+
+app.UseAuthentication();
 
 app.SeedDatabase();
 

@@ -13,6 +13,12 @@ namespace RestaurantApi.Middleware
             {
                 await _next(context);
             }
+            catch (BadRequestEcetpion badRequestEcetpion)
+            {
+                context.Response.ContentType = "text/plain";
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(badRequestEcetpion.Message);
+            }
             catch (NotFoundException notFoundException)
             {
                 context.Response.ContentType = "text/plain";

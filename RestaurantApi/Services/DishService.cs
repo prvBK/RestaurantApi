@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.IdentityModel.Tokens;
 using RestaurantApi.Entities;
 using RestaurantApi.Exceptions;
 using RestaurantApi.HelpersAndExtensions;
@@ -40,7 +39,7 @@ namespace RestaurantApi.Services
             RestaurantHelper.GetRestaurantById(_context, restaurantId);
 
             List<Dish> dishes = [.. _context.Dishes.Where(d => d.RestaurantId == restaurantId)];
-            if (dishes.IsNullOrEmpty())
+            if (dishes is null)
             {
                 throw new NotFoundException("Dish not found in current restaurant");
             }
