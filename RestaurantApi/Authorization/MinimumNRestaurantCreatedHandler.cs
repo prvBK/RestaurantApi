@@ -9,7 +9,7 @@ namespace RestaurantApi.Authorization
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MinimumNRestaurantCreated requirement)
         {
             int? userID = userContextService.GetUserId;
-            int crateRestaurantCount = restaurantDbContext.Restaurants.Where(r => r.CreatedById == userID).Count();
+            int crateRestaurantCount = restaurantDbContext.Restaurants.Count(r => r.CreatedById == userID);
 
             if (crateRestaurantCount >= requirement.MinimumRestaurantCreate)
             {
