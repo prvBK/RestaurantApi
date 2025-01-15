@@ -9,8 +9,8 @@ namespace RestaurantApi.Validators
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .MaximumLength(25)
-                .MinimumLength(5);
+                .MaximumLength(50)
+                .MinimumLength(1);
 
             RuleFor(x => x.ContactEmail)
                 .NotEmpty()

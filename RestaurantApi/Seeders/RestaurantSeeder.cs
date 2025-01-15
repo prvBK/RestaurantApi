@@ -1,98 +1,87 @@
-﻿using RestaurantApi.Entities;
+﻿using Bogus; // Upewnij się, że dodasz tę bibliotekę do swojego projektu
+using RestaurantApi.Entities;
 
 namespace RestaurantApi.Seeders
 {
-    public class RestaurantSeeder(RestaurantDbContext _dbContext)
+    public class RestaurantSeeder(RestaurantDbContext dbContext)
     {
-        private static List<Restaurant> Restaurants
+        public List<Restaurant> GenerateRandomRestaurants(int count)
         {
-            get
-            {
-                List<Restaurant> restaurants =
-                [
-                new ()
-            {
-                Name = "KFC",
-                Category = "Fast Food",
-                Description =
-                         "KFC (short for Kentucky Fried Chicken) is an American fast food restaurant chain headquartered in Louisville, Kentucky, that specializes in fried chicken.",
-                ContactEmail = "contact@kfc.com",
-                ContactNumber = "33333",
-                HasDelivery = true,
-                Dishes =
-                    [
-                        new ()
-                        {
-                            Name = "Nashville Hot Chicken",
-                            Price = 10.30M,
-                        },
+            List<int> createdByIds = dbContext.Users.Select(u => u.Id).ToList();
 
-                        new ()
-                        {
-                            Name = "Chicken Nuggets",
-                            Price = 5.30M,
-                        },
-                    ],
-                Address = new Address()
+            List<string> DishNames = new List<string>
+        {
+            "Pizza Margherita", "Spaghetti Carbonara", "Sushi", "Tacos", "Burger",
+            "Caesar Salad", "Pad Thai", "Ramen", "Fish and Chips", "Steak Frites",
+            "Lasagna", "Fried Rice", "Chow Mein", "Chicken Curry", "Beef Stroganoff",
+            "Peking Duck", "Grilled Cheese Sandwich", "Quiche Lorraine", "Moussaka",
+            "Biryani", "Goulash", "Pasta Primavera", "Seafood Paella",
+            "Vegetable Stir Fry", "Pulled Pork Sandwiches", "Falafel Wraps",
+            "Kebabs", "Ceviche", "Clam Chowder", "Stuffed Peppers",
+            "Crepes Suzette"
+        };
+
+            Faker faker = new Faker();
+            List<Restaurant> restaurants = new List<Restaurant>();
+
+            for (int i = 0; i < count; i++)
+            {
+                Restaurant restaurant = new Restaurant
                 {
-                    City = "Kraków",
-                    Street = "Długa 5",
-                    PostalCode = "30-001",
-                },
-                    CreatedById = 1
-            },
-                new Restaurant()
-                {
-                    Name = "McDonald Szewska",
-                    Category = "Fast Food",
-                    Description =
-                        "McDonald's Corporation (McDonald's), incorporated on December 21, 1964, operates and franchises McDonald's restaurants.",
-                    ContactEmail = "contact@mcdonald.com",
-                    ContactNumber = "222222",
-                    HasDelivery = true,
-                    Address = new Address()
+                    Name = faker.Company.CompanyName(),
+                    Category = faker.PickRandom(new[] { "Fast Food", "Italian", "Chinese", "Mexican", "Indian" }),
+                    Description = faker.Lorem.Sentence(10),
+                    ContactEmail = faker.Internet.Email(),
+                    ContactNumber = faker.Phone.PhoneNumber(),
+                    HasDelivery = faker.Random.Bool(),
+                    Address = new Address
                     {
-                        City = "Kraków",
-                        Street = "Szewska 2",
-                        PostalCode = "30-001"
+                        City = faker.Address.City(),
+                        Street = faker.Address.StreetAddress(),
+                        PostalCode = faker.Address.ZipCode()
                     },
-                    CreatedById = 1
-                }
-                ];
+                    CreatedById = faker.PickRandom(createdByIds)
+                };
 
-                return restaurants;
-            }
-        }
+                // Dodaj kilka losowych dań do restauracji
+                restaurant.Dishes = new List<Dish>
+                {
+                    new Dish { Name = faker.PickRandom(DishNames), Price = faker.Finance.Amount(5, 30) },
+                    new Dish { Name = faker.PickRandom(DishNames), Price = faker.Finance.Amount(5, 30) }
+                };
 
-        public List<Role> Roles
-        {
-            get
-            {
-                return
-            [
-                new Role {Name = "User" },
-                new Role {Name = "Manager" },
-                new Role { Name = "Admin" }
-            ];
+                restaurants.Add(restaurant);
             }
+
+            return restaurants;
         }
 
         public void Seed()
         {
-            if (_dbContext.Database.CanConnect())
+            if (dbContext.Database.CanConnect())
             {
-                if (!_dbContext.Roles.Any())
+                if (!dbContext.Roles.Any())
                 {
-                    List<Role> roles = Roles;
-                    _dbContext.Roles.AddRange(roles);
-                    _dbContext.SaveChanges();
+                    List<Role> roles = new List<Role>
+                    {
+                        new Role { Name = "User" },
+                        new Role { Name = "Manager" },
+                        new Role { Name = "Admin" }
+                    };
+                    dbContext.Roles.AddRange(roles);
+                    dbContext.SaveChanges();
                 }
 
-                if (!_dbContext.Restaurants.Any())
+                if (!dbContext.Restaurants.Any())
                 {
-                    List<Restaurant> restaurants = Restaurants;
-                    _dbContext.Restaurants.AddRange(restaurants);
-                    _dbContext.SaveChanges();
+                    Console.WriteLine("Restaurant start generate" + DateTime.Now);
+                    List<Restaurant> restaurants = GenerateRandomRestaurants(20);
+                    Console.WriteLine("Restaurant start AddRange" + DateTime.Now);
+
+                    dbContext.Restaurants.AddRange(restaurants);
+                    Console.WriteLine("Restaurant start SaveChanges" + DateTime.Now);
+                    dbContext.SaveChanges();
+                    Console.WriteLine("Restaurant added");
                 }
             }
         }

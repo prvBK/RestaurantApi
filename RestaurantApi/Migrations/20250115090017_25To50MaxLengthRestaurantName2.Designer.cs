@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantApi.Entities;
 
@@ -11,9 +12,11 @@ using RestaurantApi.Entities;
 namespace RestaurantApi.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250115090017_25To50MaxLengthRestaurantName2")]
+    partial class _25To50MaxLengthRestaurantName2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +40,9 @@ namespace RestaurantApi.Migrations
 
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ResaurantID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Street")
                         .IsRequired()
@@ -112,7 +118,8 @@ namespace RestaurantApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.HasIndex("CreatedById");
 
@@ -187,8 +194,8 @@ namespace RestaurantApi.Migrations
             modelBuilder.Entity("RestaurantApi.Entities.Restaurant", b =>
                 {
                     b.HasOne("RestaurantApi.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                        .WithOne("Restaurant")
+                        .HasForeignKey("RestaurantApi.Entities.Restaurant", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -208,6 +215,11 @@ namespace RestaurantApi.Migrations
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("RestaurantApi.Entities.Address", b =>
+                {
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("RestaurantApi.Entities.Restaurant", b =>

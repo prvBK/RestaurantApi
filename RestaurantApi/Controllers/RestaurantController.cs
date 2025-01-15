@@ -39,7 +39,7 @@ namespace RestaurantApi.Controllers
 
         [HttpGet]
         //[Authorize(Policy = "HasNationality")]
-        [Authorize("MinumumNResaurantCreate")]
+        //[Authorize("MinumumNResaurantCreate")]
         //[Authorize(Policy = "Atleast20")]
         public ActionResult<IEnumerable<RestaurantDto>> GetAll([FromQuery] RestaurantQuery query)
         {

@@ -30,7 +30,7 @@ namespace RestaurantApi.Entities
             modelBuilder.Entity<Restaurant>()
                 .Property(r => r.Name)
                 .IsRequired()
-                .HasMaxLength(25);
+                .HasMaxLength(50);
 
             modelBuilder.Entity<Dish>()
                 .Property(r => r.Name)
