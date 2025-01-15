@@ -67,6 +67,16 @@ builder.Services.AddScoped<IValidator<CreateRestaurantDto>, CreateRestaurantDtoV
 builder.Services.AddScoped<IValidator<RestaurantQuery>, RestaurantQueryValidator>();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontEndClient", b =>
+    {
+        b
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+             .WithOrigins(builder.Configuration["AllowOrigins"]);
+    });
+});
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
@@ -88,6 +98,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors("FrontEndClient");
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<GlobalHeaderMiddleware>();
 app.UseAuthentication();
