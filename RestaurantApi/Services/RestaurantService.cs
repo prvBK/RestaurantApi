@@ -37,21 +37,23 @@ namespace RestaurantApi.Services
             dbContext.SaveChanges();
         }
 
-        public IEnumerable<RestaurantDto> GetAll(RestaurantQuery query)
+        public PageResult<RestaurantDto> GetAll(RestaurantQuery query)
         {
+            IQueryable<Restaurant> baseQuery = dbContext
+               .Restaurants
+               .Include(r => r.Address)
+               .Include(r => r.Dishes)
+               .Where(r => query.SearchPhrase == null || (r.Name.ToLower().Contains(query.SearchPhrase.ToLower()) || r.Description.ToLower().Contains(query.SearchPhrase.ToLower())));
 
-            List<Restaurant> restaurants = [.. dbContext
-                .Restaurants
-                .Include(r => r.Address)
-                .Include(r => r.Dishes)
-                .Where(r => query.SearchPhrase == null || (r.Name.Contains(query.SearchPhrase) || r.Description.Contains(query.SearchPhrase)))
+            List<Restaurant> restaurants = [.. baseQuery
                 .Skip(query.PageSize * (query.PageNumber - 1))
                 .Take(query.PageSize)
                 ];
 
             List<RestaurantDto> restaurantDto = mapper.Map<List<RestaurantDto>>(restaurants);
+            PageResult<RestaurantDto> pageResult = new PageResult<RestaurantDto>(restaurantDto, baseQuery.Count(), query.PageSize, query.PageNumber);
 
-            return restaurantDto;
+            return pageResult;
         }
 
         public RestaurantDto GetById(int id)
