@@ -4,7 +4,7 @@ using RestaurantApi.Services.Interfaces;
 
 namespace RestaurantApi.Authorization
 {
-    public class MinimumNRestaurantCreatedHandler(ILogger<MinimumNRestaurantCreated> logger, RestaurantDbContext restaurantDbContext, IUserContextService userContextService) : AuthorizationHandler<MinimumNRestaurantCreated>
+    public class MinimumNRestaurantCreatedHandler(RestaurantDbContext restaurantDbContext, IUserContextService userContextService) : AuthorizationHandler<MinimumNRestaurantCreated>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MinimumNRestaurantCreated requirement)
         {

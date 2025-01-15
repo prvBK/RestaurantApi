@@ -6,7 +6,7 @@ namespace RestaurantApi.Services.Interfaces
     {
         int Create(CreateRestaurantDto dto);
         void Detete(int id);
-        IEnumerable<RestaurantDto> GetAll();
+        IEnumerable<RestaurantDto> GetAll(string? searchPhrase);
         RestaurantDto GetById(int id);
         void Update(int id, UpdateRestaurantDto dto);
 

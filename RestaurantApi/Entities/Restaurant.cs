@@ -13,6 +13,6 @@
         public virtual List<Dish>? Dishes { get; set; }
         public bool? HasDelivery { get; set; }
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public required string Name { get; set; }
     }
 }
