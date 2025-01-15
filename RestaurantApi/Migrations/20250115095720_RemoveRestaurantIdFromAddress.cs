@@ -8,14 +8,6 @@ namespace RestaurantApi.Migrations
     public partial class RemoveRestaurantIdFromAddress : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "RestaurantId",
-                table: "Addresses");
-        }
-
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
@@ -24,6 +16,14 @@ namespace RestaurantApi.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
+        }
+
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "RestaurantId",
+                table: "Addresses");
         }
     }
 }

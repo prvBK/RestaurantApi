@@ -38,9 +38,6 @@ namespace RestaurantApi.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = "HasNationality")]
-        //[Authorize("MinumumNResaurantCreate")]
-        //[Authorize(Policy = "Atleast20")]
         public ActionResult<PageResult<RestaurantDto>> GetAll([FromQuery] RestaurantQuery query)
         {
             PageResult<RestaurantDto> restaurantsDtos = _restaurantService.GetAll(query);

@@ -8,6 +8,22 @@ namespace RestaurantApi.Migrations
     public partial class AddUserCreateId : Migration
     {
         /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Restaurants_Users_CreatedById",
+                table: "Restaurants");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Restaurants_CreatedById",
+                table: "Restaurants");
+
+            migrationBuilder.DropColumn(
+                name: "CreatedById",
+                table: "Restaurants");
+        }
+
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
@@ -27,22 +43,6 @@ namespace RestaurantApi.Migrations
                 column: "CreatedById",
                 principalTable: "Users",
                 principalColumn: "Id");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Restaurants_Users_CreatedById",
-                table: "Restaurants");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Restaurants_CreatedById",
-                table: "Restaurants");
-
-            migrationBuilder.DropColumn(
-                name: "CreatedById",
-                table: "Restaurants");
         }
     }
 }

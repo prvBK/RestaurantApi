@@ -6,7 +6,9 @@ using RestaurantApi.Entities;
 using RestaurantApi.Exceptions;
 using RestaurantApi.HelpersAndExtensions;
 using RestaurantApi.Models;
+using RestaurantApi.Models.Enum;
 using RestaurantApi.Services.Interfaces;
+using System.Linq.Expressions;
 
 namespace RestaurantApi.Services
 {
@@ -23,7 +25,6 @@ namespace RestaurantApi.Services
 
         public void Detete(int id)
         {
-
             Restaurant? restaurant = RestaurantHelper.GetRestaurantById(dbContext, id);
 
             AuthorizationResult authorizationResult = authorizationService.AuthorizeAsync(userContextService.User, restaurant, new ResourceOperationRequirment(ResourceOperation.Delete)).Result;
@@ -44,6 +45,22 @@ namespace RestaurantApi.Services
                .Include(r => r.Address)
                .Include(r => r.Dishes)
                .Where(r => query.SearchPhrase == null || (r.Name.ToLower().Contains(query.SearchPhrase.ToLower()) || r.Description.ToLower().Contains(query.SearchPhrase.ToLower())));
+
+            Dictionary<string, Expression<Func<Restaurant, object>>> columnsSelector = new Dictionary<string, Expression<Func<Restaurant, object>>>
+            {
+                {  nameof(Restaurant.Name), r => r.Name },
+                {  nameof(Restaurant.Description), r => r.Description },
+                {  nameof(Restaurant.Category), r => r.Category },
+            };
+
+            Expression<Func<Restaurant, object>> selectedColumn = columnsSelector[query.SortBy ?? nameof(Restaurant.Name)];
+
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                baseQuery = query.SortDirection == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
 
             List<Restaurant> restaurants = [.. baseQuery
                 .Skip(query.PageSize * (query.PageNumber - 1))
