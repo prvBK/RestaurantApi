@@ -29,5 +29,23 @@ namespace RestaurantApi.Controllers
 
             return File(fileContents, contentType, fileName);
         }
+
+        [HttpPost]
+        public ActionResult Upload([FromForm] IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                string rootPath = Directory.GetCurrentDirectory();
+                string fullPath = $"{rootPath}/PrivateFiles/{file.Name}";
+                using (FileStream stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                return Ok(file);
+            }
+
+            return BadRequest();
+        }
     }
 }

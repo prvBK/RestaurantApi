@@ -30,10 +30,5 @@ DELETE {{RestaurantApi_HostAddress}}/api/restaurant/{{RestaurantId}}
 Accept: application/json
 
 ###
-PUT {{RestaurantApi_HostAddress}}/api/restaurant/{{RestaurantId}}
-Content-Type: application/json
-{
-    "name": "Update Test",
-    "description": "Update Test Description",
-    "hasDelivery": false
-}
+POST {{RestaurantApi_HostAddress}}/file
+
