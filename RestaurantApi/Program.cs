@@ -98,6 +98,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseResponseCaching();
 app.UseStaticFiles();
 app.UseCors("FrontEndClient");
 app.UseMiddleware<ErrorHandlingMiddleware>();
