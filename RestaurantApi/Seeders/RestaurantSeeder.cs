@@ -1,4 +1,5 @@
 ﻿using Bogus; // Upewnij się, że dodasz tę bibliotekę do swojego projektu
+using Microsoft.EntityFrameworkCore;
 using RestaurantApi.Entities;
 
 namespace RestaurantApi.Seeders
@@ -60,6 +61,12 @@ namespace RestaurantApi.Seeders
         {
             if (dbContext.Database.CanConnect())
             {
+                IEnumerable<string> pendingMigrations = dbContext.Database.GetPendingMigrations();
+                if (pendingMigrations != null && pendingMigrations.Any())
+                {
+                    dbContext.Database.Migrate();
+                }
+
                 if (!dbContext.Roles.Any())
                 {
                     List<Role> roles = new List<Role>

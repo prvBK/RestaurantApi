@@ -44,7 +44,7 @@ namespace RestaurantApi.Entities
             modelBuilder.Entity<Address>()
                 .Property(r => r.Street)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(60);
         }
     }
 }
